@@ -2,10 +2,6 @@ sigmoid <- function(outputs) {
   return(plogis(outputs))
 } 
 
-dW_dL <- function(labels, inputs,outputs) {
-  return( t(labels- outputs)%*%inputs )
-}
-
 log_loss <- function(y_true,y_pred) {
   y_pred <- pmax(y_pred , 1e-8)
   y_pred <- pmin(y_pred, 0.999999)

@@ -16,5 +16,5 @@ binary_accuracy <- function(y_true,y_pred) {
 
 display_image <- function(img) {
   img <- t(img)[,nrow(img):1]
-  print(image(img, axes = FALSE, col = grey(seq(0, 1, length = 2056))))
+  image(img, axes = FALSE, col = grey(seq(0, 1, length = 2056)))
 }

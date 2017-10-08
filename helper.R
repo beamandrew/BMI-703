@@ -13,3 +13,8 @@ binary_accuracy <- function(y_true,y_pred) {
   y_pred <- round(y_pred)
   return(length(which(y_true == y_pred))/length(y_true))
 }
+
+display_image <- function(img) {
+  img <- t(img)[,nrow(img):1]
+  print(image(img, axes = FALSE, col = grey(seq(0, 1, length = 2056))))
+}

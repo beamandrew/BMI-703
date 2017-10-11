@@ -104,7 +104,7 @@ datagen <- image_data_generator(
 model %>% fit_generator(
   flow_images_from_data(x_train, y_train, datagen, batch_size = 128),
   steps_per_epoch = as.integer(nrow(x_train)/128),
-  epochs = 50,
+  epochs = 1,
   verbose = 1,
   validation_data = list(x_test, y_test)
 )

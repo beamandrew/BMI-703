@@ -2,7 +2,7 @@
 title: "MLP + Keras Tutorial"
 output: html_notebook
 ---
-
+## MLP + Keras Tutorial
 In this notebook we're going to cover the basics of implementing a neural network using modern tools and techniques. Primiarly we are going to use the R [wrapper](https://keras.rstudio.com) of [keras](https://keras.rstudio.com). Keras is itself a high-level python wrapper for several backend libraries that allow for construction of computational graphs, but the one we will be using is [tensorflow](https://www.tensorflow.org) which is developed and maintained by Google.
 
 Using a library like tensorflow comes with several advantages, including:

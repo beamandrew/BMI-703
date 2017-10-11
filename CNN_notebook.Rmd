@@ -2,7 +2,7 @@
 title: "Convolutional Neural Networks"
 output: html_notebook
 ---
-
+## Convolutional Neural Networks
 Now we're ready to build some actual image recognition models using convolutional neural networks. Note that we're not going to be using black and white pictures any more. CNNs can leverage RGB color information to improve performance. We also will not be flattening our data since CNNs are designed to take advantage of the 2D structure of images. So each example will be a `64x64x3`, where the last dimensions are the red, green, blue (RGB) color channels. 
 ```{r}
 library(keras)

@@ -1,42 +1,54 @@
 ---
-title: "Backprop"
-output: html_notebook
+title: "Implementing a perceptron and backpropagation"
+output:
+  pdf_document: default
+  html_notebook: default
+  html_document:
+    df_print: paged
+  urlcolor: blue
 ---
-## Implementing a perceptron and backpropagation
-
-In this notebook we are going to walk-through the nuts and bolts of training a simple perceptron with back propagation. First thing we need to do is load some data and some helper functions:
+In this notebook we are going to walk-through the nuts and bolts of training a simple perceptron with backprop. The first thing we need to do is to load the data and some helper functions:
 ```{r}
 source("https://raw.githubusercontent.com/beamandrew/BMI705/master/helper.R")
 load(url("https://www.dropbox.com/s/unmfitketiba9i7/cat_dog_data_greyscale.RData?dl=1"))
 options(repr.plot.width=4, repr.plot.height=4)
 ```
 ### Data Structure
-The data we will be working with are images of cats and dogs, obtained from this kaggle [contest](https://www.kaggle.com/c/dogs-vs-cats) that have been resize to 64x64 images. For the moment, we will be working with black and white images to keep things simple. The `x_train` matrix is a with dimensions of `(2000,64,64)`. The first 1000 images are of cats and the second 1000 images are of dogs. Let's look at a few:
-```{r}
+The data we will be working with are images of cats and dogs, obtained from this kaggle [contest](https://www.kaggle.com/c/dogs-vs-cats) that have been resized to 64x64 images. For the moment, we will be working with black and white images to keep things simple. The `x_train` matrix is a matrix with dimensions of `(2000,64,64)` and `y_train` is a binary vector where `1` means the corresponding entry in `x_train` is a cat and 0 means it is a dog. Let's look at a few images:
+```{r,fig.width=4, fig.height=4,fig.align="center"}
 display_image(x_train[2,,])
 display_image(x_train[1002,,])
 ```
 
+Our perceptron will expect each example to be a vector, so we will need to flatten the imsages so that each row represents one image. This means that we need to reshape our input to be a 2000 x 4096 (64*64) matrix.
 ```{r}
 ## Flatten all of our images into row-vectors ##
 x_train <- matrix(x_train,nrow=nrow(x_train))
 x_test <- matrix(x_test,nrow=nrow(x_test))
 print(paste0("Number of observations: " , nrow(x_train)))
-print(paste0("Number of features: " , dim(x_train)[2], " by ", dim(x_train)[3]))
+print(paste0("Number of features: " , dim(x_train)[2]))
+```
 
+### Definining the forward pass
+This first thing we need to define is the _forward pass_. During the forward pass, the network computes the output probabilites for each input example. 
+
+Let's setup a vector `w` that will serve as our network's weights. We will start by giving all of the 4096 weights small random values:
+```{r}
 ## Let's set up our weight vector with random values initially ##
 w <- t(rnorm(ncol(x_train), mean = 0, sd=0.01))
 ```
-This first thing we need to define is the _forward pass_. During the forward pass, the network computes the output probabilites for each input example. Given out input example $x_{i}$ and a weight vector $w$, we first compute the weighted sum for a single example (or logits if you're a stats person) like so:
+
+Next, given our input example $x_{i}$ and a weight vector $w$, we first compute the weighted sum for example `i` like so:
 
 $$h_{i} = \sum_{j=1}^{4096} x_{ij}*w_j$$
 
 Next, we transfrom $h_i$ into a probability using the _sigmoid_ transformation:
 
 $$\frac{1}{1+exp(-h_i)}$$
-Below is a template of the forward pass, try to fill out the missing parts.The provided `sigmoid(h)` function is vectorized and will take the entire $h$ vector and apply the transform each element. 
+Now we have all the components for a full forward pass in our perceptron. Below is a template of the forward pass, try to fill out the missing parts. In `utils.R` (which should already be loaded), there is a `sigmoid(h)` function that is vectorized and will take the entire $h$ vector and apply the transform each element. Feel free to use it if you wish.
 ```{r, eval=FALSE}
-# This should return a vector representing the probability that y = 1 for each of the 2000 training samples
+# This should return a vector representing the 
+# probability that y = 1 for each of the 2000 training samples
 forward_pass <- function(X,w) {
     ## Compute the matrix-vector multiplication between the inputs and weights ##
     h <- 0 # Fill this in
@@ -49,6 +61,8 @@ print("Dog probabilities for the first five samples:")
 p <- forward_pass(x_train,w)
 print(dim(p))
 ```
+
+### Definining the backward pass
 The next thing we need to do is to implement the _backward pass_. The backward pass computes the derivative of all our network's parameters with respect to the loss function. A typical loss function for binary classification is _log loss_ and for a single example is:
 
 $$ \ell(y_i,p_i) = -y_i*log(p_i) - (1-y_i)*log(1-p_i) $$
@@ -62,9 +76,10 @@ The full gradient is obtained by simply taking the average across all examples:
 $$ \frac{\partial w_j}{\partial \ell} = \frac{1}{2000}\sum_{i=1}^{2000} -(y_i - p_i)*x_{ij} $$
 
 Note we take the average instead of summing so that later our learning rate will be independent of the number of samples.
-```{r}
+```{r, eval=FALSE}
 ## This function should return a vector the same size as the weight vector w. 
-## Each element of the vector is the partial dervative evaluated at the current value of the loss function
+## Each element of the vector is the partial dervative 
+## evaluated at the current value of the loss function
 backward_pass <- function(y, X, p) {
   grads <- 0 ## Fill this in
   return( grads )
@@ -74,17 +89,21 @@ backward_pass <- function(y, X, p) {
 grads <- backward_pass(y_train,x_train,p)
 print(dim(grads))
 ```
+
+## In class assignment
 Now it's time to run the gradient descent procedure. The update rule for each $w_j$ at each iteration is given by:
 
 $$w_{j} =  w_{j} - \eta* \frac{\partial w_j}{\partial \ell} $$
 
 where $\eta$ is the _learning rate_ and is typically some small number < 1. 
 
-## In class assignment
 Fill in the template below to train your perceptron. Try to see if you can get an accuracy ~ 65%. Note there will be some randomness in your loss and accruacy from run to run, even with the same parameters.
-```{r}
-## How many iterations to run gradient descent ##
-epochs = 1000
+```{r,eval=FALSE}
+## Choose how many iterations to run gradient descent ##
+epochs = 1
+
+# Choose a number > 0 and < 1 as your learning rate
+learning_rate = 0
 
 ## Initialize w ##
 w <- t(rnorm(ncol(x_train), mean = 0, sd=0.01))
@@ -93,14 +112,14 @@ for(i in 1:epochs) {
   probs <- forward_pass(x_train,w)
   grads <- backward_pass(y_train, x_train, probs)
   ## Update the weights using the gradient descent rule ##
-  w <- 0 # Fill the gradient descent update
+  w <- 0 # Fill the gradient descent
   
   ## Print out some information every 100 epochs ##
   if(i %% 100 == 0) {
     message(paste0("\nReport at epoch: ", i))
     message(paste0("Loss: ", log_loss(y_train,probs)))
     message(paste0("Accuracy: ", binary_accuracy(y_train,probs)))
-    message(paste0("Learning Rate: ", learning_rate))
+    message(paste0("Learning rate: ", learning_rate))
   }
 }
 ```

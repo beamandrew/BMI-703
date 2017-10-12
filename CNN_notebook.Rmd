@@ -21,7 +21,11 @@ model %>%
   # - Looking at 3x3 patches of the image at a time (kernal_size)
   # - Each convolution is followed by a rectified linear activation (relu)
   # - We will zero-pad the image to keep the output tensor the same size as the input tensor
-  layer_conv_2d(filters = 16, kernel_size = c(3,3), activation = 'relu', input_shape = c(64,64,3),padding = "same") %>% 
+  layer_conv_2d(filters = 16, 
+                kernel_size = c(3,3), 
+                activation = 'relu', 
+                input_shape = c(64,64,3),
+                padding = "same") %>% 
   layer_max_pooling_2d(pool_size = c(2, 2))
 ```
 

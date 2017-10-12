@@ -125,4 +125,50 @@ for(i in 1:epochs) {
 ```
 
 
+## Solution 
+Here are the matrix-versions of the forward and backward passes
+```{r}
+# This should return a vector representing the 
+# probability that y = 1 for each of the 2000 training samples
+forward_pass <- function(X,w) {
+    ## Compute the matrix-vector multiplication between the inputs and weights ##
+    h <- X %*% t(w)
+    ## Transform into probabilities using the provided sigmoid() function ##
+    probs <- sigmoid(h)
+    return(probs)
+}
+
+backward_pass <- function(y, X, p) {
+  grads <- -t(y-p)%*%X
+  return( grads/nrow(X) )
+}
+```
+
+Here is the full gradient descent procedure
+```{r}
+## Choose how many iterations to run gradient descent ##
+epochs = 1000
+
+# Choose a number > 0 and < 1 as your learning rate
+learning_rate = 0.01
+
+## Initialize w ##
+w <- t(rnorm(ncol(x_train), mean = 0, sd=0.01))
+
+for(i in 1:epochs) {
+  probs <- forward_pass(x_train,w)
+  grads <- backward_pass(y_train, x_train, probs)
+  ## Update the weights using the gradient descent rule ##
+  learning_rate <- learning_rate*0.999
+  w <- w - learning_rate*grads
+  
+  ## Print out some information every 100 epochs ##
+  if(i %% 100 == 0) {
+    message(paste0("\nReport at epoch: ", i))
+    message(paste0("Loss: ", log_loss(y_train,probs)))
+    message(paste0("Accuracy: ", binary_accuracy(y_train,probs)))
+    message(paste0("Learning rate: ", learning_rate))
+  }
+}
+```
 

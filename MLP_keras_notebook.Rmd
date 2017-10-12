@@ -54,8 +54,7 @@ model %>% fit(
 Note that `model` is modified _in place_ so we do not need to assign the result to a variable.
 
 ## In Class Assignment 
-
-Now it's up to you to improve the model. Here are some suggestions to get you started:
+Now it's time for some *grad student descent*. Your goal is to get the best value for the loss function on the *validation* data. Keep track of your best validation loss and validation accuracy (along with your settings) and we'll see who was able to find the best model.  Here are some suggestions to get you started:
 
 - Add one or more hidden layers.
 - Change the parameters for the hidden layers. Here are some ones to start with:
@@ -65,8 +64,7 @@ Now it's up to you to improve the model. Here are some suggestions to get you st
 - Add [_dropout_](https://keras.rstudio.com/reference/layer_dropout.html) in between your dense layers.
 - Use a different optimizer and/or a different learning rate
 
-Now it's time for some *grad student descent*. Your goal is to get the best value for the loss function on the *validation* data. Keep track of your best validation loss and validation accuracy (along with your settings) and we'll see who was able to find the best model. 
-
+Fill in the template below to improve the model:
 ```{r, eval=FALSE}
 model %>%
   ## Insert your improvments here

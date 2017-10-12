@@ -9,4 +9,4 @@ This assignment covers the basics of backprop, gradient descent, and the percept
 This assignment details how to implement modern neural nets using the keras framework. The notebook can be found [here](https://github.com/beamandrew/BMI-703/blob/master/MLP_keras_notebook.Rmd)
 
 ### Convoluational Neural Nets (CNNs)
-The final assignment shows how to build a 'real' computer vision system using CNNs. The notebook can be found [here](https://github.com/beamandrew/BMI-703/blob/master/CNN_notebook.Rmd)
+The final assignment shows how to build a 'real' computer vision system using CNNs. The notebook can be found [here](https://github.com/beamandrew/BMI-703/blob/master/CNN_notebook.pdf)

@@ -1,6 +1,8 @@
 ---
 title: "Convolutional Neural Networks"
-output: html_notebook
+output:
+  pdf_document: default
+  html_notebook: default
 ---
 ## Convolutional Neural Networks
 Now we're ready to build some actual image recognition models using convolutional neural networks. Note that we're not going to be using black and white pictures any more. CNNs can leverage RGB color information to improve performance. We also will not be flattening our data since CNNs are designed to take advantage of the 2D structure of images. So each example will be a `64x64x3`, where the last dimensions are the red, green, blue (RGB) color channels. 
@@ -39,7 +41,7 @@ model %>%
 model %>% summary()
 ```
 Now let's compile and train for 10 epochs:
-```{r,, results="hide"}
+```{r, results="hide"}
 model %>% 
   compile(
     loss = 'binary_crossentropy',
@@ -64,14 +66,16 @@ print(paste("Validation accuracy:", results$acc,sep=' '))
 Already we should be doing much better than any of our previous models, and this model starts making progress much faster than our MLP (which took 100s - 1000s of epochs and overfit pretty badly). This is because CNNs use the properites of images (2D spatial structure) to prevent overfitting. 
 
 ## In class assignment
-Now it's your turn again to improve upon this model. Here are some suggestions:
+Now it's your turn again to improve upon this model. Keep track of your best model and validation accuracy, the person/team with the best result will win a prize! Here are some suggestions:
 
 - 2 convolutional layers before the max pooling layer
 - More convolutional/maxpooling blocks. Be careful though, this can get computational expensive quickly.
 - A dense layer after the flatten layer but before the sigmoid layer
 - Dropout at various places
 - Regularization
-```{r,}
+
+Put your additions in here to improve the model:
+```{r, eval=FALSE}
 model <- keras_model_sequential()
 model %>%
   ## Your improvments here
@@ -90,4 +94,5 @@ model %>%
 )
 ```
 
-
+### Bonus
+While you are fitting your models, think about how we can perform a convolution using just matrix multiplications.

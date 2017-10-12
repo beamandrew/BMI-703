@@ -66,9 +66,20 @@ Now it's time for some *grad student descent*. Your goal is to get the best valu
 
 Fill in the template below to improve the model:
 ```{r, eval=FALSE}
+model <- keras_model_sequential() 
 model %>%
   ## Insert your improvments here
   
-  layer_dense(units = 1, activation = 'sigmoid')
+  layer_dense(units = 1, activation = 'sigmoid') %>% 
+  compile(
+    loss = 'binary_crossentropy',
+    optimizer = optimizer_sgd(lr = 0.01),
+    metrics = c('accuracy')
+  ) %>% 
+  fit(
+    x_train, y_train, verbose=1,
+    validation_data = list(x_test,y_test),
+    epochs = 100, batch_size = 128
+  )
 ```
 

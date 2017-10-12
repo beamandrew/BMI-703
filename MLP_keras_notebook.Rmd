@@ -64,6 +64,7 @@ Now it's time for some *grad student descent*. Your goal is to get the best valu
 - Add [_dropout_](https://keras.rstudio.com/reference/layer_dropout.html) in between your dense layers.
 - Use a different optimizer and/or a different learning rate
 
+Fill in the template below to improve the model:
 ```{r, eval=FALSE}
 model %>%
   ## Insert your improvments here
